@@ -11,6 +11,11 @@ dependencies {
     compile project(":h2o-orc-parser")
   }
   compile project(":h2o-parquet-parser")
+  if (doIncludeScalaAssembly()){
+    compile project(":h2o-scala_"+scalaVersion())
+    compile "org.scala-lang:scala-library:"+scalaVersion()
+
+  }
   compile "org.slf4j:slf4j-log4j12:1.7.5"
 }
 
@@ -31,6 +36,28 @@ shadowJar {
   manifest {
     attributes 'Main-Class': 'water.H2OApp'
   }
+}
+
+def doIncludeScalaAssembly() {
+  detectProperty("doIncludeScalaAssembly", "false").toBoolean()
+}
+
+def scalaVersion(){
+  def scalaVersion = detectProperty("scalaVersion", "2.10")
+  def scalaBaseVersion = scalaVersion.substring(0,4)
+  if(!["2.10", "2.11"].contains(scalaBaseVersion)){
+    throw new IllegalArgumentException("Supported scala base versions are 2.10 and 2.11")
+  }
+  return scalaBaseVersion
+}
+
+def detectProperty(String propertyName, String defaultValue) {
+  String value = [ project.hasProperty(propertyName) ? project[propertyName] : null,
+                                    System.properties[propertyName],
+                                    defaultValue
+  ].find { h -> h!=null } // first match
+  // Return env
+  return value
 }
 
 artifacts {
