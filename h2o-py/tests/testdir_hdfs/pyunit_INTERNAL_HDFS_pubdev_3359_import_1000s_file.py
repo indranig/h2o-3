@@ -13,7 +13,7 @@ from tests import pyunit_utils
 #----------------------------------------------------------------------
 
 
-def hdfs_orc_parser():
+def hdfs_pubdev_3359_parser():
 
     # Check if we are running inside the H2O network by seeing if we can touch
     # the namenode.
@@ -22,7 +22,7 @@ def hdfs_orc_parser():
     if hadoop_namenode_is_accessible:
         hdfs_name_node = pyunit_utils.hadoop_namenode()
 
-        hdfs_csv_file = "/datasets/hexdev_3359"
+        hdfs_csv_file = "/datasets/PUBDEV-3359"
         url_csv = "hdfs://{0}{1}".format(hdfs_name_node, hdfs_csv_file)
 
         h2oframe_csv = h2o.import_file(url_csv)
@@ -37,6 +37,6 @@ def hdfs_orc_parser():
 
 
 if __name__ == "__main__":
-    pyunit_utils.standalone_test(hdfs_orc_parser)
+    pyunit_utils.standalone_test(hdfs_pubdev_3359_parser)
 else:
-    hdfs_orc_parser()
+    hdfs_pubdev_3359_parser()
