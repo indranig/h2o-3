@@ -6,14 +6,14 @@ import time
 from tests import pyunit_utils
 #----------------------------------------------------------------------
 # PUBDEV-3359: verify that we can parse thousands of files correctly or
-# identify if not.  Split the airlines_all datasets into 2000 files
+# identify it if not.  Split the airlines_all datasets in to 1999 files
 # each with 50000 lines of data.  Total data frame should contain 100000000
 # rows.  Check and make sure our parser can handle this.
 #
 #----------------------------------------------------------------------
 
 
-def hdfs_pubdev_3359_parser():
+def hdfs_orc_parser():
 
     # Check if we are running inside the H2O network by seeing if we can touch
     # the namenode.
@@ -22,7 +22,7 @@ def hdfs_pubdev_3359_parser():
     if hadoop_namenode_is_accessible:
         hdfs_name_node = pyunit_utils.hadoop_namenode()
 
-        hdfs_csv_file = "/datasets/PUBDEV-3359"
+        hdfs_csv_file = "/datasets/hexdev_3359"
         url_csv = "hdfs://{0}{1}".format(hdfs_name_node, hdfs_csv_file)
 
         h2oframe_csv = h2o.import_file(url_csv)
@@ -37,6 +37,6 @@ def hdfs_pubdev_3359_parser():
 
 
 if __name__ == "__main__":
-    pyunit_utils.standalone_test(hdfs_pubdev_3359_parser)
+    pyunit_utils.standalone_test(hdfs_orc_parser)
 else:
-    hdfs_pubdev_3359_parser()
+    hdfs_orc_parser()
