@@ -433,12 +433,15 @@ def test_random_grid_search_for_glm():
     test_glm_gaussian_random_grid.test2_glm_random_grid_search_max_model()
     test_glm_gaussian_random_grid.test3_glm_random_grid_search_max_runtime_secs()
     test_glm_gaussian_random_grid.test4_glm_random_grid_search_metric("MSE", False)
-    test_glm_gaussian_random_grid.test4_glm_random_grid_search_metric("r2", True)
+    test_glm_gaussian_random_grid.test4_glm_random_grid_search_metric("r2", True)  # R2 was removed as a stopping metric
     # test_glm_gaussian_random_grid.tear_down()  # obsolete
 
     # exit with error if any tests have failed
     if test_glm_gaussian_random_grid.test_failed > 0:
         sys.exit(1)
+    else:
+        pyunit_utils.remove_files(os.path.join(test_glm_gaussian_random_grid.current_dir,
+                                               test_glm_gaussian_random_grid.json_filename))
 
 if __name__ == "__main__":
     pyunit_utils.standalone_test(test_random_grid_search_for_glm)
