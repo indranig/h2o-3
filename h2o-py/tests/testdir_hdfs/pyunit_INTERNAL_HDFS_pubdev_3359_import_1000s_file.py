@@ -6,7 +6,7 @@ import time
 from tests import pyunit_utils
 #----------------------------------------------------------------------
 # PUBDEV-3359: verify that we can parse thousands of files correctly or
-# identify it if not.  Split the airlines_all datasets in to 1999 files
+# identify if not.  Split the airlines_all datasets into 2000 files
 # each with 50000 lines of data.  Total data frame should contain 100000000
 # rows.  Check and make sure our parser can handle this.
 #
