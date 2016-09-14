@@ -299,7 +299,7 @@ class Test_glrm_grid_search:
                     manual_model_metrics = manual_model._model_json['output']['objective']
 
                     # just compare the mse in this case within tolerance:
-                    if not((type(grid_model_metrics) == str) or (type(manual_model_metrics) == str)):
+                    if not((type(grid_model_metrics) == unicode) or (type(manual_model_metrics) == unicode)):
                         if (abs(grid_model_metrics) > 0) and \
                                 abs(grid_model_metrics - manual_model_metrics) / grid_model_metrics > self.allowed_diff:
                             print("test_glrm_grid_search_over_params for GLRM warning: grid search model mdetric ({0}) "
