@@ -68,7 +68,7 @@ class Test_glm_random_grid_search:
     possible_number_models = 0      # possible number of models built based on hyper-parameter specification
     max_model_number = 0    # maximum number of models specified to test for stopping conditions, generated later
     max_grid_runtime = 1          # maximum runtime value in seconds, 1 minute max
-    allowed_scaled_overtime = 0.5   # used to set max_allowed_runtime as allowed_scaled_overtime * total model run time
+    allowed_scaled_overtime = 1   # used to set max_allowed_runtime as allowed_scaled_overtime * total model run time
     allowed_scaled_time = 1       # scale back time
     allowed_scaled_model_number = 1.5   # used to set max_model_number as
     # possible_number_models * allowed_scaled_model_number
