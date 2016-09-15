@@ -91,7 +91,7 @@ class Test_rf_grid_search:
     hyper_params = dict()
     hyper_params["balance_classes"] = [True, False]
     hyper_params["fold_assignment"] = ["AUTO", "Random", "Modulo", "Stratified"]
-    hyper_params["stopping_metric"] = ['logloss', 'r2']
+    hyper_params["stopping_metric"] = ['logloss']
 
     # parameters to be excluded from hyper parameter list even though they may be gridable
     exclude_parameter_lists = ['validation_frame', 'response_column', 'fold_column', 'offset_column',
