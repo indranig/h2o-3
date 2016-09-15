@@ -127,7 +127,7 @@ class TestGLMMultinomial:
     total_test_number = 7
 
     ignored_eps = 1e-15   # if p-values < than this value, no comparison is performed, only for Gaussian
-    allowed_diff = 1e-1   # tolerance of comparison for logloss/prediction accuracy
+    allowed_diff = 5e-1   # tolerance of comparison for logloss/prediction accuracy
 
     nan_fraction = 0.2          # denote maximum fraction of NA's to be inserted into a column
 
