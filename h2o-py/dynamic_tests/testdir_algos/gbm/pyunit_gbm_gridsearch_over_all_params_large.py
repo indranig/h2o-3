@@ -102,7 +102,7 @@ class Test_gbm_grid_search:
 
     # parameters to be excluded from hyper parameter list even though they may be gridable
     exclude_parameter_lists = ['distribution', 'tweedie_power', 'validation_frame', 'response_column',
-                               'sample_rate_per_class']   # do not need these
+                               'sample_rate_per_class',"r2_stopping"]   # do not need these
 
     # these are supposed to be gridable but are not really
     exclude_parameter_lists.extend(['class_sampling_factors', 'fold_column', 'weights_column', 'offset_column',
@@ -316,10 +316,6 @@ class Test_gbm_grid_search:
                         del params_list["max_runtime_secs"]
                     else:
                         max_runtime = 0
-
-                    if "r2_stopping" in params_list:
-                        model_params["r2_stopping"] = params_list["r2_stopping"]
-                        del params_list["r2_stopping"]
 
                     if "validation_frame" in params_list:
                         model_params["validation_frame"] = params_list["validation_frame"]
