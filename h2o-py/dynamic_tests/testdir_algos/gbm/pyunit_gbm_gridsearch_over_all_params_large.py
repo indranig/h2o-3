@@ -337,7 +337,7 @@ class Test_gbm_grid_search:
                     manual_run_runtime += model_runtime
 
                     summary_list = manual_model._model_json['output']['model_summary']
-                    tree_num = summary_list.cell_values["number_of_trees"][0]
+                    tree_num = summary_list.cell_values[0][summary_list.col_header.index("number_of_trees")]
 
                     if max_runtime > 0:
                         # shortest possible time it takes to build this model
