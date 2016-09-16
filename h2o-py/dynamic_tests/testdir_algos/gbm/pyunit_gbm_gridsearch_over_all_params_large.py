@@ -374,9 +374,9 @@ class Test_gbm_grid_search:
 
                 if self.test_failed == 0:
                     print("test_gbm_grid_search_over_params for GBM has passed!")
-        except:
+        except Exception as e:
             if self.possible_number_models > 0:
-                print("test_gbm_grid_search_over_params for GBM failed: exception was thrown for no reason.")
+                print("test_gbm_grid_search_over_params for GBM failed: exception ({0}) was thrown for no reason.".format(e))
                 self.test_failed += 1
 
 

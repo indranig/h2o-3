@@ -351,10 +351,10 @@ class Test_deeplearning_grid_search:
 
             if self.test_failed == 0:
                 print("test_deeplearning_fieldnames for deeplearning has passed!")
-        except:
+        except Exception as e:
             if len(grid_model) > 0:
-                print("test_deeplearning_fieldnames for deeplearning failed: exception was thrown for "
-                      "no reason.")
+                print("test_deeplearning_fieldnames for deeplearning failed: exception ({0}) was thrown for "
+                      "no reason.".format(e))
                 self.test_failed += 1
 
 
