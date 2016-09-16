@@ -362,10 +362,10 @@ class Test_naivebayes_grid_search:
 
                 if self.test_failed == 0:
                     print("test_naivebayes_grid_search_over_params for naivebayes has passed!")
-        except:
+        except Exception as e:
             if self.possible_number_models > 0:
-                print("test_naivebayes_grid_search_over_params for naivebayes failed: exception was thrown for "
-                      "no reason.")
+                print("test_naivebayes_grid_search_over_params for naivebayes failed: exception ({0}) was thrown for "
+                      "no reason.".format(e))
                 self.test_failed += 1
 
 
