@@ -231,7 +231,7 @@ class Test_glm_random_grid_search:
         h2o.cluster_info()
 
         # setup_data our stopping condition here, random discrete and find all models
-        search_criteria = {'strategy': 'RandomDiscrete', "stopping_rounds": 0, "seed": round(time.time())}
+        search_criteria = {'strategy': 'RandomDiscrete', "stopping_rounds": 0, "seed": int(round(time.time()))}
         print("GLM Binomial grid search_criteria: {0}".format(search_criteria))
 
         # fire off random grid-search
@@ -270,7 +270,7 @@ class Test_glm_random_grid_search:
         # setup_data our stopping condition here
         self.max_model_number = random.randint(1, int(self.allowed_scaled_model_number * self.possible_number_models))
         search_criteria = {'strategy': 'RandomDiscrete', 'max_models': self.max_model_number,
-                           "seed": round(time.time())}
+                           "seed": int(round(time.time()))}
 
         print("GLM Binomial grid search_criteria: {0}".format(search_criteria))
         print("Possible number of models built is {0}".format(self.possible_number_models))
@@ -333,7 +333,7 @@ class Test_glm_random_grid_search:
         max_run_time_secs = random.uniform(self.one_model_time, self.max_grid_runtime)
         max_run_time_secs = random.uniform(self.one_model_time, self.allowed_scaled_time*self.max_grid_runtime)
         search_criteria = {'strategy': 'RandomDiscrete', 'max_runtime_secs': max_run_time_secs,
-                           "seed": round(time.time())}
+                           "seed": int(round(time.time()))}
         # search_criteria = {'strategy': 'RandomDiscrete', 'max_runtime_secs': 1/1e8}
 
         print("GLM Binomial grid search_criteria: {0}".format(search_criteria))
@@ -390,7 +390,7 @@ class Test_glm_random_grid_search:
             "stopping_metric": metric_name,
             "stopping_tolerance": random.uniform(1e-8, self.max_tolerance),
             "stopping_rounds": random.randint(1, self.max_stopping_rounds),
-            "seed": round(time.time())
+            "seed": int(round(time.time()))
         }
 
         print("GLM Binomial grid search_criteria: {0}".format(search_criteria))
