@@ -72,7 +72,7 @@ class Test_glrm_grid_search:
     max_real_number = 3         # maximum number of real grid values to generate
 
     time_scale = 2              # maximum runtime scale
-    extra_time_fraction = 0.1   # since timing is never perfect, give some extra time on top of maximum runtime limit
+    extra_time_fraction = 0.5   # since timing is never perfect, give some extra time on top of maximum runtime limit
     model_run_time = 0.0        # time taken to run a vanilla GLRM model.  Determined later.
 
     iter_scale = 10             # scale maximum number of iteration to be upto 100

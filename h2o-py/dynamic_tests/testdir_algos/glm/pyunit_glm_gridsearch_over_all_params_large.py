@@ -99,7 +99,7 @@ class Test_glm_grid_search:
     lambda_scale = 50           # scale the lambda values to be higher than 0 to 1
     alpha_scale = 1.2           # scale alpha into bad ranges
     time_scale = 3              # maximum runtime scale
-    extra_time_fraction = 0.1   # since timing is never perfect, give some extra time on top of maximum runtime limit
+    extra_time_fraction = 0.5   # since timing is never perfect, give some extra time on top of maximum runtime limit
     min_runtime_per_epoch = 0   # minimum run time found.  Determined later
 
     families = ['gaussian', 'binomial', 'multinomial']    # distribution family to perform grid search over

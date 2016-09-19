@@ -43,7 +43,7 @@ class Test_glm_random_grid_search:
     training1_filename = "smalldata/gridsearch/binomial_training1_set.csv"
     json_filename = "random_gridsearch_GLM_binomial_hyper_parameter_" + curr_time + ".json"
 
-    allowed_diff = 0.1   # error tolerance allowed
+    allowed_diff = 0.5   # error tolerance allowed
     allowed_time_diff = 1e-1    # fraction of max_runtime_secs allowed for max run time stopping criteria
 
     # System parameters, do not change.  Dire consequences may follow if you do

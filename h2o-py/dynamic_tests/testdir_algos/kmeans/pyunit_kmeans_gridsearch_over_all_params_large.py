@@ -64,7 +64,7 @@ class Test_kmeans_grid_search:
 
     time_scale = 2              # maximum runtime scale
     max_iter_scale = 10         # scale the maximum number of iterations to be 100 maximum
-    extra_time_fraction = 0.1   # since timing is never perfect, give some extra time on top of maximum runtime limit
+    extra_time_fraction = 0.5   # since timing is never perfect, give some extra time on top of maximum runtime limit
     model_run_time = 0.0        # time taken to run a vanilla kmeans model.  Determined later.
     allowed_runtime_diff = 0.05     # run time difference between kmeans manually built and gridsearch models before
                                     # we attempt to compare training metrics.
