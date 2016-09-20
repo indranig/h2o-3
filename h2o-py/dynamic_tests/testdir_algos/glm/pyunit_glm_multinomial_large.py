@@ -77,9 +77,9 @@ class TestGLMMultinomial:
     min_col_count_ratio = 100   # set min row count to be multiples of col_count to avoid over fitting
 
     ###### for debugging
-    max_col_count = 5         # set maximum values of train/test row and column counts
-    max_col_count_ratio = 50   # set max row count to be multiples of col_count to avoid overfitting
-    min_col_count_ratio = 10
+ #   max_col_count = 5         # set maximum values of train/test row and column counts
+ #   max_col_count_ratio = 50   # set max row count to be multiples of col_count to avoid overfitting
+ #   min_col_count_ratio = 10
 
 
 
@@ -911,11 +911,6 @@ class TestGLMMultinomial:
         print("Test6: test the GLM with enum/real values.")
         h2o.cluster_info()
 
-        # training result from python sklearn
-        (p_weights, p_logloss_train, p_cm_train, p_accuracy_training, p_logloss_test, p_cm_test, p_accuracy_test) =\
-            self.sklearn_multinomial_result(self.training_data_file_enum_nans, self.test_data_file_enum_nans,
-                                            True, False)
-
         # import training set and test set with missing values
         training_data = h2o.import_file(pyunit_utils.locate(self.training_data_file_enum_nans))
         test_data = h2o.import_file(pyunit_utils.locate(self.test_data_file_enum_nans))
@@ -936,6 +931,11 @@ class TestGLMMultinomial:
         if training_data[y_index].nlevels()[0] < self.class_number:
             print("Response classes are not represented in training dataset.")
             sys.exit(0)
+
+        # training result from python sklearn
+        (p_weights, p_logloss_train, p_cm_train, p_accuracy_training, p_logloss_test, p_cm_test, p_accuracy_test) =\
+            self.sklearn_multinomial_result(self.training_data_file_enum_nans, self.test_data_file_enum_nans,
+                                            True, False)
 
         test_data[y_index] = test_data[y_index].round().asfactor()
 
