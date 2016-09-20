@@ -2,6 +2,7 @@ package water.persist;
 
 import water.H2O;
 import water.Key;
+import water.MRTask;
 import water.Value;
 import water.exceptions.H2OIllegalArgumentException;
 import water.fvec.UploadFileVec;
@@ -334,6 +335,40 @@ public class PersistManager {
 
     File f = new File(path);
     return f.isDirectory();
+  }
+
+  public boolean isEmptyDirectoryAllNodes(String path) {
+    if (isHdfsPath(path)) {
+      validateHdfsConfigured();
+      if (! I[Value.HDFS].exists(path)) return true;
+      if (! I[Value.HDFS].isDirectory(path)) return false;
+      PersistEntry[] content = I[Value.HDFS].list(path);
+      return (content == null) || (content.length == 0);
+    }
+
+    return new CheckLocalDirTask(path).doAllNodes()._result;
+  }
+
+  private static class CheckLocalDirTask extends MRTask<CheckLocalDirTask> {
+    String _path;
+    // OUT
+    boolean _result;
+
+    CheckLocalDirTask(String _path) { this._path = _path; }
+
+    @Override public void reduce(CheckLocalDirTask mrt) {
+      _result = _result && mrt._result;
+    }
+    @Override protected void setupLocal() {
+      File f = new File(_path);
+      if (! f.exists())
+        _result = true;
+      else if (f.isDirectory()) {
+        File[] content = f.listFiles();
+        _result = (content != null) && (content.length == 0);
+      } else
+        _result = false;
+    }
   }
 
   public long length(String path) {

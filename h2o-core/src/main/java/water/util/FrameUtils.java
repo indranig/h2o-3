@@ -9,7 +9,6 @@ import hex.ToEigenVec;
 import jsr166y.CountedCompleter;
 import water.*;
 import water.fvec.*;
-import water.parser.BufferedString;
 import water.parser.ParseDataset;
 import water.parser.ParseSetup;
 
@@ -340,6 +339,48 @@ public class FrameUtils {
       }
     }
 
+    private long copyCSVStream(Frame.CSVStream is, OutputStream os, int firstChkIdx, int buffer_size) throws IOException {
+      long len = 0;
+      byte[] bytes = new byte[buffer_size];
+      int curChkIdx = firstChkIdx;
+      for (;;) {
+        int count = is.read(bytes, 0, buffer_size);
+        if (count <= 0) {
+          break;
+        }
+        len += count;
+        os.write(bytes, 0, count);
+        int workDone = is._curChkIdx - curChkIdx;
+        if (workDone > 0) {
+          _j.update(workDone);
+          curChkIdx = is._curChkIdx;
+        }
+      }
+      return len;
+    }
+
+    private void exportCSVStream(Frame.CSVStream is, String path, int firstChkIdx) {
+      OutputStream os = null;
+      long written = -1;
+      try {
+        os = H2O.getPM().create(path, _overwrite);
+        written = copyCSVStream(is, os, firstChkIdx, 4 * 1024 * 1024);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      } finally {
+        if (os != null) {
+          try {
+            os.flush(); // Seems redundant, but seeing a short-file-read on windows sometimes
+            os.close();
+            Log.info("Written " + written + " bytes of key '" + _frameName + "' to " + _path + ".");
+          } catch (Exception e) {
+            Log.err(e);
+          }
+        }
+        try { is.close(); } catch (Exception e) { Log.err(e); }
+      }
+    }
+
     class PartExportTask extends MRTask<PartExportTask> {
       final String[] _colNames;
       final int _length;
@@ -352,26 +393,6 @@ public class FrameUtils {
         _partNaming = partNaming;
       }
 
-      private long copyStream(Frame.CSVStream is, OutputStream os, int firstChkIdx, int buffer_size) throws IOException {
-        long len = 0;
-        byte[] bytes = new byte[buffer_size];
-        int curChkIdx = firstChkIdx;
-        for (;;) {
-          int count = is.read(bytes, 0, buffer_size);
-          if (count <= 0) {
-            break;
-          }
-          len += count;
-          os.write(bytes, 0, count);
-          int workDone = is._curChkIdx - curChkIdx;
-          if (workDone > 0) {
-            _j.update(workDone);
-            curChkIdx = is._curChkIdx;
-          }
-        }
-        return len;
-      }
-
       @Override
       public void map(Chunk[] cs) {
         Chunk anyChunk = cs[0];
@@ -381,29 +402,14 @@ public class FrameUtils {
         int partIdx = anyChunk.cidx() / _length;
         String partPath = _partNaming ? _path + "/part-m-" + String.valueOf(100000 + partIdx).substring(1) : _path;
         Frame.CSVStream is = new Frame.CSVStream(cs, _colNames, _length, false);
-        OutputStream os = null;
-        long written = -1;
-        try {
-          os = H2O.getPM().create(partPath, _overwrite);
-          written = copyStream(is, os, anyChunk.cidx(), 4 * 1024 * 1024);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } finally {
-          if (os != null) {
-            try {
-              os.flush(); // Seems redundant, but seeing a short-file-read on windows sometimes
-              os.close();
-              Log.info("Part " + partIdx + " of key '" + _frameName + "' of " + written + " bytes was written to " + _path + ".");
-            } catch (Exception e) {
-              Log.err(e);
-            }
-          }
-          try {
-            is.close();
-          } catch (Exception e) {
-            Log.err(e);
-          }
-        }
+        exportCSVStream(is, partPath, anyChunk.cidx());
+      }
+
+      @Override
+      protected void setupLocal() {
+        if (! _partNaming) return;
+        boolean created = H2O.getPM().mkdirs(_path);
+        if (! created) Log.warn("Path ", _path, " was not created.");
       }
     }
   }
