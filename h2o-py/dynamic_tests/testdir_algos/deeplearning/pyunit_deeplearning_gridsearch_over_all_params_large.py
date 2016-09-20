@@ -303,6 +303,10 @@ class Test_deeplearning_grid_search:
                     model_params["elastic_averaging_regularization"] = params_list["elastic_averaging_regularization"]
                     del params_list["elastic_averaging_regularization"]
 
+                if "hidden" in params_list:
+                    temp = params_list["hidden"]
+                    params_list["hidden"] = [temp]
+
                 manual_model = H2ODeepLearningEstimator(**params_list)
                 manual_model.train(x=self.x_indices, y=self.y_index, training_frame=self.training1_data,
                                    **model_params)
